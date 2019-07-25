@@ -9,6 +9,24 @@
         html,body {
             padding: 0;
             margin: 0;
+
+            font-family: PingFangSC-Regular;
+        }
+        @media screen and (max-width: 680px) {
+            .hd {
+                font-size: 13px !important;
+            }
+            .logo {
+                margin-right: 45px !important;
+            }
+        }
+        @media screen and (max-width: 850px) and (min-width: 681px) {
+            .hd {
+                font-size: 14px !important;
+            }
+            .logo {
+                margin-right: 45px !important;
+            }
         }
         .hd {
             position: fixed;
@@ -19,12 +37,26 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            height: 60px;
+            height: 70px;
 
+            font-size: 16px;
+            color: #fff;
             background-color: rgb(255, 139, 80);
         }
+        .hd.active {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-right: 170px;
+        }
+        .logo > img {
+            width: 60px;
+            height: 60px;
+        }
         .bd {
-            margin-top: 60px;
+            margin-top: 70px;
         }
         .navList {
             display: flex;
@@ -39,8 +71,6 @@
             margin-right: 60px;
             border-bottom: 1px solid transparent;
 
-            font-size: 18px;
-            color: #fff;
             cursor: pointer;
         }
         .navList > li.active {
@@ -53,11 +83,20 @@
         .contPlaceholder {
             height: 300px;
         }
+        .ft {
+            height: 60px;
+
+            font-size: 14px;
+            color: #f5f3f3;
+            text-align: center;
+            line-height: 60px;
+            background-color: #474646;
+        }
     </style>
 </head>
 <body>
     <div class="hd">
-        <div class="logo"><img /></div>
+        <div class="logo"><img src="./images/logo.png" />溏樾优品网络科技</div>
         <ul class="navList">
             <li data-index="0" class="active">首页</li>
             <li data-index="1">关于我们</li>
@@ -71,51 +110,60 @@
         <div class="cont cont1"><img src="./images/web_03.jpg" /></div>
         <div class="cont cont1"><img src="./images/web_04.jpg" /><div class="contPlaceholder"></div></div>
     </div>
-
+    <div class="ft"><span class="copyRight">Copyright@版权所有  北京凯尚轩服装销售有限公司</span></div>
     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script>
-        function init() {
-            curHeight = [];
-            scrollLenth = $('.cont').length;
-            var h = 0 - $('.hd').innerHeight();
-            curHeight.push(h)
-            for (var i = 0; i < scrollLenth; i++) {
-                h += $('.cont').eq(i).innerHeight();
-                curHeight.push(h)
-            }
-            curHeight.push(30000);
-        }
-
-        init();
         $(function () {
-            // 导航栏按钮
-            $('.navList > li').click(function (e) {
-                e.preventDefault();
-                var i = $(this).data('index');
-                console.log(curHeight[i]);
-                $('body,html').animate({
-                    scrollTop: curHeight[i]
-                }, 600, function () {
-                    flag = true;
-                })
-            })
+            var scrollHeightList = [];
+            var $navItemDomList = $('.navList > li');
+            var $hd = $('body > .hd');
 
-            $(window).scroll(function (event) {
-                var windStop = $(this).scrollTop();
-                if (windStop > 100) {
-                    $('.navList').addClass('light_active');
-                } else {
-                    $('.navList').removeClass('light_active');
+            function init() {
+                scrollHeightList = [];
+                const contDomList = $.makeArray($('.cont'));
+
+                for(var i = 0; i < contDomList.length; i++) {
+                    var prevScrollHeight = scrollHeightList[i - 1] || 0;
+                    var currScrollHeight = ($(contDomList[i - 1]).innerHeight() || 0) + prevScrollHeight;
+                    scrollHeightList.push(currScrollHeight);
                 }
-                for (var j = 0; j < curHeight.length; j++) {
-                    var h1 = curHeight[j];
-                    var h2 = curHeight[j + 1];
-                    if (h1 <= windStop && windStop < h2 && h2) {
-                        $('.navList > li').removeClass('active').eq(j).addClass('active');
-                        flag = false
+
+                changeNavItemStatusByScroll($(window).scrollTop());
+            }
+
+            function changeNavItemStatusByScroll(currScrollTop) {
+                if (currScrollTop > $hd.height()) {
+                    $hd.addClass('active');
+                } else {
+                    $hd.removeClass('active');
+                }
+
+                for (var j = 0; j < scrollHeightList.length; j++) {
+                    var h1 = scrollHeightList[j];
+                    var h2 = scrollHeightList[j + 1];
+
+                    if (!h2 || (currScrollTop >= h1 && currScrollTop < h2)) {
+                        $navItemDomList.removeClass('active').eq(j).addClass('active');
                         return;
                     }
                 }
+            }
+
+            init();
+
+            // 导航栏按钮
+            $navItemDomList.click(function (e) {
+                var i = $navItemDomList.index(this);
+
+                $('html').animate({
+                    scrollTop: scrollHeightList[i]
+                }, 600)
+            })
+
+            $(window).scroll(function (e) {
+                var windowScrollTop = $(this).scrollTop();
+
+                changeNavItemStatusByScroll(windowScrollTop);
             })
 
             $(window).resize(function () {
