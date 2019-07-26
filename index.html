@@ -127,7 +127,7 @@
                 for(var i = 0; i < contDomList.length; i++) {
                     var prevScrollHeight = (scrollHeightList[i - 1] || {}).max || -200;
                     var currScrollHeight = $(contDomList[i]).innerHeight() + prevScrollHeight;
-                    scrollHeightList.push({ min: prevScrollHeight, max: currScrollHeight });
+                    scrollHeightList.push({ min: prevScrollHeight, max: currScrollHeight, curr: prevScrollHeight + 150 });
                 }
 
                 changeNavItemStatusByScroll($(window).scrollTop());
@@ -158,7 +158,7 @@
                 var i = $navItemDomList.index(this);
 
                 $('html').animate({
-                    scrollTop: scrollHeightList[i]
+                    scrollTop: scrollHeightList[i].curr
                 }, 600)
             })
 
