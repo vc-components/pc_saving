@@ -78,6 +78,7 @@
             border-bottom-color: currentColor;
         }
         .cont img {
+            display: block;
             width: 100%;
         }
         .contPlaceholder {
@@ -96,25 +97,26 @@
 </head>
 <body>
     <div class="hd">
-        <div class="logo"><img src="./images/logo.png" />溏樾优品网络科技</div>
+        <div class="logo"><img src="./images/logo.png" />溏樾优品</div>
         <ul class="navList">
-            <li data-index="0" class="active">首页</li>
-            <li data-index="1">关于我们</li>
-            <li data-index="2">我们的优势</li>
-            <li data-index="3">联系我们</li>
+            <li class="active">首页</li>
+            <li>关于我们</li>
+            <li>双重好礼</li>
+            <li>我们的优势</li>
+            <li>联系我们</li>
         </ul>
     </div>
     <div class="bd">
-        <div class="cont"><img src="./images/web_01.jpg" /></div>
-        <div class="cont"><img src="./images/web_02.jpg" /></div>
-        <div class="cont"><img src="./images/web_03.jpg" /></div>
-        <div class="cont"><img src="./images/web_04.jpg" /><div class="contPlaceholder"></div></div>
+        <div class="cont"><img src="./images/web_01.gif" /></div>
+        <div class="cont"><img src="./images/web_02.gif" /></div>
+        <div class="cont"><img src="./images/web_03.gif" /></div>
+        <div class="cont"><img src="./images/web_04.gif" /></div>
+        <div class="cont"><img src="./images/web_05.jpg" /></div>
     </div>
-    <div class="ft"><span class="copyRight">Copyright@版权所有  北京凯尚轩服装销售有限公司</span></div>
     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script>
-        $(function () {
-            var scrollHeightList = [];
+        window.onload = function () {
+            window.scrollHeightList = [];
             var $navItemDomList = $('.navList > li');
             var $hd = $('body > .hd');
 
@@ -127,7 +129,6 @@
                     var currScrollHeight = $(contDomList[i]).innerHeight() + prevScrollHeight;
                     scrollHeightList.push({ min: prevScrollHeight, max: currScrollHeight });
                 }
-                console.log(scrollHeightList)
 
                 changeNavItemStatusByScroll($(window).scrollTop());
             }
@@ -141,7 +142,7 @@
 
                 for (var j = 0; j < scrollHeightList.length; j++) {
                     var scrollHeight = scrollHeightList[j];
-                    console.log(`currScrollTop: ${currScrollTop}, min:${scrollHeight.min}, max:${scrollHeight.max}`)
+                    
 
                     if (currScrollTop >= scrollHeight.min && currScrollTop < scrollHeight.max) {
                         $navItemDomList.removeClass('active').eq(j).addClass('active');
@@ -169,8 +170,8 @@
 
             $(window).resize(function () {
                 init();
-            })
-        });
+            });
+        };
 
     </script>
 </body>
