@@ -32,10 +32,19 @@
             position: fixed;
             left: 0;
             top: 0;
+            z-index: 9;
+
+            display: -webkit-box;
+
+            display: -ms-flexbox;
 
             display: flex;
-            align-items: center;
-            justify-content: center;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
             width: 100%;
             height: 70px;
 
@@ -47,8 +56,12 @@
             background-color: rgba(0, 0, 0, 0.6);
         }
         .logo {
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
-            align-items: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+                    align-items: center;
             margin-right: 170px;
         }
         .logo > img {
@@ -59,8 +72,12 @@
             margin-top: 10px;
         }
         .navList {
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
-            align-items: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+                    align-items: center;
 
             list-style: none;
             padding: 0;
@@ -77,14 +94,39 @@
             color: #fdff4e;
             border-bottom-color: currentColor;
         }
+        .cont {
+            height: 100vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                    flex-direction: column;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                    justify-content: center;
+        }
+        .cont:first-child {
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
+        }
+        .cont:last-child {
+            position: relative;
+        }
         .cont img {
             display: block;
             width: 100%;
         }
         .contPlaceholder {
-            height: 100px;
+            height: 0px;
         }
-        .ft {
+        .copyRight {
+            position: absolute;
+            bottom: 0;
+
+            width: 100%;
             height: 60px;
 
             font-size: 14px;
@@ -107,10 +149,14 @@
     </div>
     <div class="bd">
         <div class="cont"><img src="./images/web_01.gif" /></div>
-        <div class="cont"><img src="./images/web_02.gif" /><div class="contPlaceholder"></div></div>
+        <div class="cont"><img src="./images/web_02.gif" /></div>
         <div class="cont"><img src="./images/web_03.gif" /></div>
-        <div class="cont"><img src="./images/web_04.jpg" /></div>
+        <div class="cont">
+            <img src="./images/web_04.jpg" />
+            <div class="copyRight">Copyright@版权所有  北京凯尚轩服装销售有限公司</div>
+        </div>
     </div>
+    
     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script>
         window.onload = function () {
@@ -120,12 +166,14 @@
 
             function init() {
                 scrollHeightList = [];
-                const contDomList = $.makeArray($('.cont'));
+                var windowHeight = $(window).innerHeight();
+                var contDomList = $.makeArray($('.cont'));
 
                 for(var i = 0; i < contDomList.length; i++) {
                     var prevScrollHeight = (scrollHeightList[i - 1] || {}).max || -200;
                     var currScrollHeight = $(contDomList[i]).innerHeight() + prevScrollHeight;
-                    scrollHeightList.push({ min: prevScrollHeight, max: currScrollHeight, curr: prevScrollHeight + 150 });
+
+                    scrollHeightList.push({ min: prevScrollHeight, max: currScrollHeight, curr: prevScrollHeight + 200 });
                 }
 
                 changeNavItemStatusByScroll($(window).scrollTop());
